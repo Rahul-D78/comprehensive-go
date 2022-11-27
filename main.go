@@ -1,67 +1,36 @@
 package main
 
 import (
+	c "demo/concurrency"
 	"fmt"
-	"strings"
+	"runtime"
+	"time"
 )
 
 // var remoteRouteMap map[string][]string
 
 func main() {
+	start := time.Now()
+	defer func() {
+		// checking time taken to run the func
+		fmt.Println("Time take to execute the func is", time.Since(start))
+		// fetching number of gorutines spawn by our profram
+		fmt.Println("num of gorutine spawn is", runtime.NumGoroutine())
+	}()
 
-	subsetAddrs := make([]string, 0)
-	fmt.Println(subsetAddrs)
-	a := "I am a"
-	b := "slice-rbac-deployment-role"
+	// initiating a channel of type bolean
+	smokeSignal := make(chan bool)
+	sumChan := make(chan int)
 
-	subsetAddrs = append(subsetAddrs, a)
-	fmt.Println(subsetAddrs)
+	evilNinjas := "Hello"
+	// Using go keyword to spawn multiple goroutines / processes
+	go c.Attack(evilNinjas, smokeSignal)
+	// printing the recieve signal from attack func
+	fmt.Println(<-smokeSignal)
 
-	rolebindingNameArr := strings.Split(b, "-")
-	var rolebindingName []string
-	fmt.Println(rolebindingNameArr)
+	go c.Sum(1, 2, sumChan)
+	fmt.Println(<-sumChan)
 
-	for i, name := range rolebindingNameArr {
-		if i == len(rolebindingNameArr)-1 {
-			continue
-		}
-		rolebindingName = append(rolebindingName, name)
-	}
-	newRolebindingName := strings.Join(rolebindingName, "-")
-	fmt.Println(newRolebindingName + "-rolebinding")
-
-	// a := "I am a"
-	// b := "I am b"
-	// c := "I am c"
-
-	// var strarr = []string{"abcd", "efgh"}
-
-	// remoteRouteMap = make(map[string][]string)
-
-	// for i := 0; i < len(strarr)-1; i++ {
-	// 	fmt.Println(strarr[0])
-	// 	remoteRouteMap[a] = append(remoteRouteMap[a], strarr[0])
-	// }
-
-	// remoteRouteMap[a] = append(remoteRouteMap[a], b)
-	// remoteRouteMap[a] = append(remoteRouteMap[a], c)
-
-	// var count = 0
-
-	// for i := 0; i < len(remoteRouteMap[a]); i++ {
-	// 	count++
-	// 	// fmt.Println(remoteRouteMap[a][0])
-
-	// 	if reflect.DeepEqual(remoteRouteMap[a][i], c) {
-	// 		fmt.Println("Matched")
-	// 	}
-
-	// }
-
-	// fmt.Println(remoteRouteMap)
-
-	// for _, val := range remoteRouteMap {
-	// 	fmt.Println(len(val))
-	// }
-
+	// Wait until all the threads are getting executed
+	// time.Sleep(2 * time.Second)
 }
