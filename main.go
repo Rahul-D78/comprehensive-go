@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+func captainElect(ninja chan string, message string) {
+	time.Sleep(3 * time.Second)
+	ninja <- message
+}
+
 func attack(target string, attacked chan bool) {
 	fmt.Println("Throwing ninja stars at", target)
 	time.Sleep(1 * time.Second)
@@ -23,6 +28,19 @@ func main() {
 	}()
 
 	smokeSignal := make(chan bool)
+
+	// initiate 2 channels in the memory
+	ninja1, ninja2 := make(chan string), make(chan string)
+
+	go captainElect(ninja1, "ninja1")
+	go captainElect(ninja2, "ninja2")
+
+	select {
+	case message := <-ninja1:
+		fmt.Println(message)
+	case message := <-ninja2:
+		fmt.Println(message)
+	}
 
 	evilNinja := "Nano"
 	// Using go keyword to spawn multiple goroutines / processes
