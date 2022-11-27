@@ -2,66 +2,57 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"runtime"
+	"time"
 )
 
-// var remoteRouteMap map[string][]string
+func captainElect(ninja chan string, message string) {
+	time.Sleep(3 * time.Second)
+	ninja <- message
+}
+
+func attack(target string, attacked chan bool) {
+	fmt.Println("Throwing ninja stars at", target)
+	time.Sleep(1 * time.Second)
+	// after our work done we can send a signal back to the main func
+	attacked <- true
+}
 
 func main() {
+	start := time.Now()
+	defer func() {
+		// checking time taken to run the func
+		fmt.Println("Time take to execute the func is", time.Since(start))
+		// fetching number of gorutines spawn by our profram
+		fmt.Println("num of gorutine spawn is", runtime.NumGoroutine())
+	}()
 
-	subsetAddrs := make([]string, 0)
-	fmt.Println(subsetAddrs)
-	a := "I am a"
-	b := "slice-rbac-deployment-role"
+	smokeSignal := make(chan bool)
 
-	subsetAddrs = append(subsetAddrs, a)
-	fmt.Println(subsetAddrs)
+	// initiate 2 channels in the memory
+	ninja1, ninja2 := make(chan string), make(chan string)
 
-	rolebindingNameArr := strings.Split(b, "-")
-	var rolebindingName []string
-	fmt.Println(rolebindingNameArr)
+	go captainElect(ninja1, "ninja1")
+	go captainElect(ninja2, "ninja2")
 
-	for i, name := range rolebindingNameArr {
-		if i == len(rolebindingNameArr)-1 {
-			continue
-		}
-		rolebindingName = append(rolebindingName, name)
+	select {
+	case message := <-ninja1:
+		fmt.Println(message)
+	case message := <-ninja2:
+		fmt.Println(message)
 	}
-	newRolebindingName := strings.Join(rolebindingName, "-")
-	fmt.Println(newRolebindingName + "-rolebinding")
 
-	// a := "I am a"
-	// b := "I am b"
-	// c := "I am c"
+	evilNinja := "Nano"
+	// Using go keyword to spawn multiple goroutines / processes
+	go attack(evilNinja, smokeSignal)
+	// printing the recieve signal from attack func
+	fmt.Println(<-smokeSignal)
 
-	// var strarr = []string{"abcd", "efgh"}
+	// For temp purpose we can wait for 2 sec to exit out of main process
+	// time.Sleep(2 * time.Second)
 
-	// remoteRouteMap = make(map[string][]string)
-
-	// for i := 0; i < len(strarr)-1; i++ {
-	// 	fmt.Println(strarr[0])
-	// 	remoteRouteMap[a] = append(remoteRouteMap[a], strarr[0])
-	// }
-
-	// remoteRouteMap[a] = append(remoteRouteMap[a], b)
-	// remoteRouteMap[a] = append(remoteRouteMap[a], c)
-
-	// var count = 0
-
-	// for i := 0; i < len(remoteRouteMap[a]); i++ {
-	// 	count++
-	// 	// fmt.Println(remoteRouteMap[a][0])
-
-	// 	if reflect.DeepEqual(remoteRouteMap[a][i], c) {
-	// 		fmt.Println("Matched")
-	// 	}
-
-	// }
-
-	// fmt.Println(remoteRouteMap)
-
-	// for _, val := range remoteRouteMap {
-	// 	fmt.Println(len(val))
-	// }
-
+	// Implementing buffer channels (By default the capacity of a channel is 0)
+	channel := make(chan string, 1)
+	channel <- "Pulling val from buffer"
+	fmt.Println(<-channel)
 }
