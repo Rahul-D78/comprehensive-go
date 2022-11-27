@@ -5,9 +5,11 @@ import (
 	"time"
 )
 
-func attack(target string) {
+func attack(target string, attacked chan bool) {
 	fmt.Println("Throwing ninja stars at", target)
 	time.Sleep(1 * time.Second)
+	// after our work done we can send a signal back to the main func
+	attacked <- true
 }
 
 func main() {
@@ -17,12 +19,14 @@ func main() {
 		fmt.Println(time.Since(start))
 	}()
 
-	evilNinjas := []string{"Nano", "Pico", "Fermi", "Auto"}
-	for _, evilNinja := range evilNinjas {
-		// Using go keyword to spawn multiple goroutines / processes
-		go attack(evilNinja)
-	}
+	smokeSignal := make(chan bool)
+
+	evilNinja := "Nano"
+	// Using go keyword to spawn multiple goroutines / processes
+	go attack(evilNinja, smokeSignal)
+	// printing the recieve signal from attack func
+	fmt.Println(<-smokeSignal)
 
 	// For temp purpose we can wait for 2 sec to exit out of main process
-	time.Sleep(2 * time.Second)
+	// time.Sleep(2 * time.Second)
 }
