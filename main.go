@@ -36,4 +36,6 @@ func main() {
 	// time.Sleep(2 * time.Second)
 
 	dsa.LinkedList()
+	dsa.Stack()
+	dsa.Queue()
 }
