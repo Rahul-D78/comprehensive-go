@@ -2,6 +2,7 @@ package main
 
 import (
 	c "demo/concurrency"
+	dsa "demo/dsa"
 	"fmt"
 	"runtime"
 	"time"
@@ -33,4 +34,6 @@ func main() {
 
 	// Wait until all the threads are getting executed
 	// time.Sleep(2 * time.Second)
+
+	dsa.LinkedList()
 }
