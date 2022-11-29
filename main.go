@@ -38,4 +38,5 @@ func main() {
 	dsa.LinkedList()
 	dsa.Stack()
 	dsa.Queue()
+	dsa.Bst()
 }
