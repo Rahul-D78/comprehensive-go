@@ -39,4 +39,5 @@ func main() {
 	dsa.Stack()
 	dsa.Queue()
 	dsa.Bst()
+	dsa.Trie()
 }
