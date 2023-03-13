@@ -3,9 +3,12 @@ package main
 import (
 	c "demo/concurrency"
 	dsa "demo/dsa"
+	config "demo/env"
 	"fmt"
 	"runtime"
 	"time"
+
+	"github.com/kelseyhightower/envconfig"
 )
 
 // var remoteRouteMap map[string][]string
@@ -40,4 +43,15 @@ func main() {
 	dsa.Queue()
 	dsa.Bst()
 	dsa.Trie()
+
+	// SetUp envconfig
+	var conf = new(config.Config)
+	if err := envconfig.Usage("hello", conf); err != nil {
+		panic(err)
+	}
+	if err := envconfig.Process("hello", conf); err != nil {
+		panic(err)
+	}
+	// Call the func
+	conf.InitializeCABundle()
 }
