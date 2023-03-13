@@ -2,8 +2,20 @@ package utils
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"strings"
 )
+
+// ProjectRoot func fetch the absolute path
+func ProjectRoot() string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	projectRoot := path.Join(cwd, "../")
+	return projectRoot
+}
 
 // UniqueName generates a new unique string from a give string
 func uniqueName() {
