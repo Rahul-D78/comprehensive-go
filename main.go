@@ -4,6 +4,7 @@ import (
 	c "demo/concurrency"
 	dsa "demo/dsa"
 	config "demo/env"
+	io "demo/io_opts"
 	"fmt"
 	"runtime"
 	"time"
@@ -54,4 +55,10 @@ func main() {
 	}
 	// Call the func
 	conf.InitializeCABundle()
+
+	writeConfig := &io.WriteConfig{
+		CloudName: "hello",
+		Region:    "India",
+	}
+	io.WriteToFile(*writeConfig)
 }
