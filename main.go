@@ -1,6 +1,7 @@
 package main
 
 import (
+	"demo/concepts"
 	c "demo/concurrency"
 	dsa "demo/dsa"
 	config "demo/env"
@@ -61,4 +62,9 @@ func main() {
 		Region:    "India",
 	}
 	io.WriteToFile(*writeConfig)
+
+	// calling networkinterface client to get interface info
+	m := concepts.NewNetInfClientProvider()
+	info, _ := m.GetNetworkInterfaceInfo("tcp:192.3200")
+	fmt.Println(info)
 }
