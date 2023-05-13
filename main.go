@@ -71,4 +71,8 @@ func main() {
 	// encoding yaml data storing into a file and reading and printing the data
 	// after decoding using yaml.unmarshel().
 	concepts.YamlFunc()
+
+	// Sum is a vaiadic function which can accept n number of arguments
+	totalSum := concepts.Sum(1, 2, 3, 4, 5, 6)
+	fmt.Println(totalSum)
 }
