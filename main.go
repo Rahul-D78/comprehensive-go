@@ -67,4 +67,8 @@ func main() {
 	m := concepts.NewNetInfClientProvider()
 	info, _ := m.GetNetworkInterfaceInfo("tcp:192.3200")
 	fmt.Println(info)
+
+	// encoding yaml data storing into a file and reading and printing the data
+	// after decoding using yaml.unmarshel().
+	concepts.YamlFunc()
 }
