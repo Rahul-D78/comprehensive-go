@@ -13,8 +13,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// var remoteRouteMap map[string][]string
-
 func main() {
 	start := time.Now()
 	defer func() {
@@ -75,4 +73,15 @@ func main() {
 	// Sum is a vaiadic function which can accept n number of arguments
 	totalSum := concepts.Sum(1, 2, 3, 4, 5, 6)
 	fmt.Println(totalSum)
+
+	concepts.GetScheduleTime()
+
+	// Initializing chan of type bool
+	// done := make(chan bool)
+
+	// fmt.Println("------------------ Starting Healthcheck -------------------")
+	// cfg := &c.Config{}
+	// cfg.PeriodicHealthCheck(done)
+	// fmt.Println("------------------ Ending Healthcheck ---------------------")
+
 }
