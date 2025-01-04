@@ -101,4 +101,11 @@ func main() {
 	fmt.Println(vector, "<<<<<<<<<<< value from prometheus metrics query")
 
 	// end node health monitoring
+
+	// server mode
+
+	// monitoing.StartMetricsCollector("8081")
+
+	// end server mode
+
 }
