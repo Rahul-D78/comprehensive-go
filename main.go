@@ -1,16 +1,19 @@
 package main
 
 import (
+	"context"
 	"demo/concepts"
 	c "demo/concurrency"
 	dsa "demo/dsa"
 	config "demo/env"
 	io "demo/io_opts"
+	"demo/monitoing"
 	"fmt"
 	"runtime"
 	"time"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/prometheus/common/model"
 )
 
 func main() {
@@ -84,4 +87,18 @@ func main() {
 	// cfg.PeriodicHealthCheck(done)
 	// fmt.Println("------------------ Ending Healthcheck ---------------------")
 
+	// start node health monitoring
+
+	res, err := monitoing.PrometheusQuery(context.Background(), "kube_statefulset_created")
+	if err != nil {
+		fmt.Println(err, "error during executing prometheus query")
+		panic(err)
+	}
+	vector := res.(model.Vector)
+	if vector.Len() == 0 {
+		fmt.Println("This query returned no data")
+	}
+	fmt.Println(vector, "<<<<<<<<<<< value from prometheus metrics query")
+
+	// end node health monitoring
 }
